@@ -191,6 +191,7 @@ function initializeWebsite() {
         new CleanInteractions();
         new SmoothScrolling();
         new TooltipManager();
+        
         console.log('All systems initialized');
     } catch (error) {
         console.error('Error initializing:', error);
@@ -205,12 +206,20 @@ function initializeWebsite() {
         }
     }, 800);
     
-    // Clean hero entrance
+    // Clean hero entrance with enhanced timing
     setTimeout(() => {
         document.querySelectorAll('.hero-buttons .btn').forEach((btn, index) => {
             setTimeout(() => {
                 btn.style.opacity = '1';
                 btn.style.transform = 'translateY(0)';
+                
+                // Add a subtle bounce effect
+                setTimeout(() => {
+                    btn.style.transform = 'translateY(-2px)';
+                    setTimeout(() => {
+                        btn.style.transform = 'translateY(0)';
+                    }, 150);
+                }, 100);
             }, index * 100);
         });
     }, 600);
@@ -547,6 +556,22 @@ document.addEventListener('DOMContentLoaded', function() {
             transform: translateY(10px);
             transition: all 0.4s ease;
         }
+        
+        /* Touch improvements for mobile */
+        @media (max-width: 768px) {
+            .btn, .social-link, .nav-link {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+        
+        /* Enhanced focus styles for accessibility */
+        .btn:focus,
+        .nav-link:focus,
+        .social-link:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
     `;
     document.head.appendChild(enhancedStyles);
 
@@ -600,7 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 1500);
 
-    // Clean menu interaction
+    // Enhanced mobile menu interaction
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
 
@@ -608,15 +633,35 @@ document.addEventListener('DOMContentLoaded', function() {
         hamburger.addEventListener('click', () => {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         });
 
-        document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        }));
+        // Close menu when clicking on links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
     }
 
-    // Clean project filtering
+    // Enhanced project filtering with touch support
     const filterBtns = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
 
@@ -633,7 +678,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         card.style.opacity = '1';
                         card.style.transform = 'translateY(0)';
-                    }, index * 50);
+                    }, index * (window.innerWidth <= 768 ? 30 : 50));
                 } else {
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(10px)';
@@ -645,34 +690,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Clean contact form
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-                submitBtn.style.background = '#059669';
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.style.background = '';
-                    submitBtn.disabled = false;
-                    contactForm.reset();
-                }, 2000);
-            }, 1000);
-        });
-    }
-
-    // Initialize vector background
+    // Initialize enhanced systems
     new VectorBackground();
+    
+    // Initialize enhanced interactions on desktop only
+    if (window.innerWidth > 768) {
+        setTimeout(() => {
+            new EnhancedInteractions();
+            new ParticleSystem();
+            new ScrollTriggers();
+        }, 2000);
+    } else {
+        // Mobile-optimized initialization
+        new ScrollTriggers();
+    }
 });
 
 // Clean scroll function
@@ -776,4 +807,154 @@ class SkillsManager {
             }, index * 150);
         });
     }
+}
+
+// Enhanced keyboard navigation
+document.addEventListener('keydown', (e) => {
+    // Enhanced keyboard shortcuts
+    if (e.ctrlKey || e.metaKey) {
+        switch(e.key) {
+            case '1':
+                e.preventDefault();
+                scrollToSection('home');
+                break;
+            case '2':
+                e.preventDefault();
+                scrollToSection('about');
+                break;
+            case '3':
+                e.preventDefault();
+                scrollToSection('projects');
+                break;
+            case '4':
+                e.preventDefault();
+                scrollToSection('skills');
+                break;
+            case '5':
+                e.preventDefault();
+                scrollToSection('contact');
+                break;
+        }
+    }
+    
+    // Theme toggle with 'T' key
+    if (e.key === 't' || e.key === 'T') {
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle && !e.target.matches('input, textarea')) {
+            themeToggle.click();
+        }
+    }
+});
+
+// Enhanced touch and gesture support
+class TouchGestureHandler {
+    constructor() {
+        this.startY = 0;
+        this.startX = 0;
+        this.init();
+    }
+
+    init() {
+        // Enhanced touch event listeners for better mobile interaction
+        document.addEventListener('touchstart', (e) => {
+            this.startY = e.touches[0].clientY;
+            this.startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+            // Handle custom touch interactions
+            const currentY = e.touches[0].clientY;
+            const currentX = e.touches[0].clientX;
+            
+            // Add pull-to-refresh hint
+            if (window.scrollY === 0 && currentY - this.startY > 100) {
+                document.body.style.background = 'linear-gradient(to bottom, rgba(37, 99, 235, 0.1), var(--white))';
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const endY = e.changedTouches[0].clientY;
+            const endX = e.changedTouches[0].clientX;
+            
+            const deltaY = this.startY - endY;
+            const deltaX = this.startX - endX;
+            
+            // Reset background
+            document.body.style.background = '';
+            
+            // Add swipe gesture handling for sections
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 100) {
+                if (deltaX > 0) {
+                    // Swipe left - next section
+                    this.navigateSection('next');
+                } else {
+                    // Swipe right - previous section
+                    this.navigateSection('prev');
+                }
+            }
+        }, { passive: true });
+    }
+
+    navigateSection(direction) {
+        const sections = ['home', 'about', 'education', 'projects', 'skills', 'contact'];
+        const currentSection = this.getCurrentSection();
+        const currentIndex = sections.indexOf(currentSection);
+        
+        let targetIndex;
+        if (direction === 'next') {
+            targetIndex = (currentIndex + 1) % sections.length;
+        } else {
+            targetIndex = (currentIndex - 1 + sections.length) % sections.length;
+        }
+        
+        scrollToSection(sections[targetIndex]);
+    }
+
+    getCurrentSection() {
+        const sections = document.querySelectorAll('section[id]');
+        let current = 'home';
+        
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= 100 && rect.bottom >= 100) {
+                current = section.id;
+            }
+        });
+        
+        return current;
+    }
+}
+
+// Initialize touch gestures on mobile
+if (window.innerWidth <= 768) {
+    document.addEventListener('DOMContentLoaded', () => {
+        new TouchGestureHandler();
+    });
+}
+
+// Enhanced error handling and debugging
+window.addEventListener('error', (e) => {
+    console.error('Website error:', e.error);
+    // Graceful fallback for critical errors
+    if (e.error && e.error.message.includes('EnhancedInteractions')) {
+        console.log('Falling back to basic interactions');
+        // Continue without enhanced interactions
+    }
+});
+
+// Performance monitoring
+if ('PerformanceObserver' in window) {
+    const perfObserver = new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => {
+            if (entry.entryType === 'measure' && entry.name === 'website-load') {
+                console.log('Website load time:', entry.duration);
+            }
+        });
+    });
+    
+    perfObserver.observe({ entryTypes: ['measure'] });
+    
+    window.addEventListener('load', () => {
+        performance.measure('website-load', 'navigationStart');
+    });
 }

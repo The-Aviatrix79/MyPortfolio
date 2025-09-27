@@ -2,17 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>My Portfolio. - Divyam Arora</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <meta name="description" content="Divyam Arora - CSE AIML student portfolio showcasing innovative AI/ML projects and full-stack development skills.">
+    
+    <!-- Mobile optimizations -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/2563eb/ffffff?text=DA">
 </head>
 <body>
     <!-- Vector Background -->
     <div class="vector-background" id="vectorBackground"></div>
-
     <!-- Theme Toggle Button -->
     <div class="theme-toggle" id="themeToggle">
         <div class="theme-toggle-slider">
@@ -56,8 +61,8 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
+    <!-- Hero Section with Parallax -->
+    <section id="home" class="hero parallax-section">
         <div class="hero-content">
             <div class="hero-text">
                 <div class="hero-badge">
@@ -158,8 +163,8 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
+    <!-- Stats Section with Parallax -->
+    <section class="stats-section parallax-section">
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-card interactive-card">
@@ -194,8 +199,8 @@
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about-section">
+    <!-- About Section with Parallax -->
+    <section id="about" class="about-section parallax-section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">About Me</h2>
@@ -258,8 +263,8 @@
         </div>
     </section>
 
-    <!-- Education Timeline -->
-    <section id="education" class="experience-section">
+    <!-- Education Timeline with Parallax -->
+    <section id="education" class="experience-section parallax-section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Education Journey</h2>
@@ -298,8 +303,8 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects-section">
+    <!-- Projects Section with Parallax -->
+    <section id="projects" class="projects-section parallax-section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Featured Projects</h2>
@@ -416,8 +421,8 @@
         </div>
     </section>
 
-    <!-- Enhanced Skills Section -->
-    <section id="skills" class="skills-section">
+    <!-- Enhanced Skills Section with Parallax -->
+    <section id="skills" class="skills-section parallax-section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Technical Expertise</h2>
@@ -643,8 +648,8 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
+    <!-- Contact Section with Parallax -->
+    <section id="contact" class="contact-section parallax-section">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Get In Touch</h2>
@@ -728,6 +733,8 @@
         </div>
     </footer>
 
+    <script src="parallax.js"></script>
+    <script src="enhanced-interactions.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
